@@ -1,7 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
-import {
-  Link
-} from "@remix-run/react";
+
 
 export const meta: MetaFunction = () => {
   return [
@@ -13,8 +11,8 @@ export const meta: MetaFunction = () => {
 export default function Index() {
   return (
     <>
-    <h1 className="">QTPie</h1>
-    <Link to="/account">Account</Link>
+      <h1 className="">QTPie</h1>
+
     </>
   );
 }

@@ -1,12 +1,9 @@
-import Login from "~/components/login";
-import Register from "~/components/register";
+import { Outlet } from "@remix-run/react";
 
-export default function Index() {
+export default function AccountPage() {
     return (
       <>
-      <h1 className="">QTPie Account</h1>
-      <Login />
-      <Register />
+        <Outlet />
       </>
     );
   }
