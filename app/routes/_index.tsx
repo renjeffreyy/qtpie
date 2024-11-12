@@ -12,6 +12,7 @@ export default function Index() {
   return (
     <>
       <h1 className="">QTPie</h1>
+      <p>Fresh out the oven and onto your plate.</p>
 
     </>
   );

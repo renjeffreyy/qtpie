@@ -15,10 +15,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Form as RemixForm } from "@remix-run/react";
+import { prisma } from "~/db/db.server"
 
 const formSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
+  name: z.string(),
   email: z.string().email().min(5),
   password: z.string().min(8, {
     message: "password must be at least 8 characters",
@@ -29,8 +29,7 @@ function RegisterForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      name: "",
       email: "",
       password: "",
     },
@@ -42,25 +41,12 @@ function RegisterForm() {
         <div className="flex gap-x-4">
           <FormField
             control={form.control}
-            name="firstName"
+            name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>First Name</FormLabel>
                 <FormControl>
                   <Input placeholder="First Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="lastName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Last Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Last Name" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -112,8 +98,18 @@ export default function RegisterPage() {
 
   export async function action({ request }: ActionFunctionArgs) {
     const formData = await request.formData();
+    const name = String(formData.get("name"));
+    const email = String(formData.get("email"));
+    const password = String(formData.get("password"));
+   
+    await prisma.user.create({
+      data: {
+        name,email,password
+      },
+    })
   
-    console.log(formData);
+    const allUsers = await prisma.user.findMany()
+    console.dir(allUsers, { depth: null })
   
     return json({ ok: true });
   }
