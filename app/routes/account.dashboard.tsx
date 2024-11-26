@@ -1,17 +1,15 @@
-import { json } from "@remix-run/node"; // or cloudflare/deno
 import { prisma } from "~/db/db.server"
-import { useLoaderData } from "@remix-run/react";
+import type { LoaderFunctionArgs } from '@remix-run/node'
+import { json } from '@remix-run/node'
+import { Form, useLoaderData } from '@remix-run/react'
+import { authenticator } from '~/modules/auth/auth.server'
 
 
-export async function loader() {
-  const user = await prisma.user.findUnique({
-    where: {
-      email: 'renjeffreyy@gmail.com',
-    },
+export async function loader({ request }: LoaderFunctionArgs) {
+  const user = await authenticator.isAuthenticated(request, {
+    failureRedirect: '/',
   })
-  console.log(user)
-  return json(user);
-
+  return json({ user })
 }
 
 
@@ -25,9 +23,11 @@ export default function AccountPage() {
       )
     }
     return (
-      <>
-      <h1 className="">Hi {user.name}</h1>
-
-      </>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <h1>{user && `Welcome ${user.email}`}</h1>
+      <Form action="/account/logout" method="POST">
+        <button>Log out</button>
+      </Form>
+    </div>
     );
   }

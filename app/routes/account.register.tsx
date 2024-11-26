@@ -1,5 +1,4 @@
-
-import type { LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
+import type { ActionFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Form as RemixForm } from "@remix-run/react";
-import { prisma } from "~/db/db.server"
+import { prisma } from "~/db/db.server";
 
 const formSchema = z.object({
   name: z.string(),
@@ -87,29 +86,30 @@ function RegisterForm() {
 }
 
 export default function RegisterPage() {
-    return (
-      <>
+  return (
+    <>
       <h1 className="">Register</h1>
       <RegisterForm />
-      </>
-    );
-  }
+    </>
+  );
+}
 
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const name = String(formData.get("name"));
+  const email = String(formData.get("email"));
+  const password = String(formData.get("password"));
 
-  export async function action({ request }: ActionFunctionArgs) {
-    const formData = await request.formData();
-    const name = String(formData.get("name"));
-    const email = String(formData.get("email"));
-    const password = String(formData.get("password"));
-   
-    await prisma.user.create({
-      data: {
-        name,email,password
-      },
-    })
-  
-    const allUsers = await prisma.user.findMany()
-    console.dir(allUsers, { depth: null })
-  
-    return json({ ok: true });
-  }
+  await prisma.user.create({
+    data: {
+      name,
+      email,
+      password,
+    },
+  });
+
+  const allUsers = await prisma.user.findMany();
+  console.dir(allUsers, { depth: null });
+
+  return json({ ok: true });
+}

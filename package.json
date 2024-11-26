@@ -21,6 +21,7 @@
     "@remix-run/serve": "^2.13.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "install": "^0.13.0",
     "isbot": "^4.1.0",
     "lucide-react": "^0.454.0",
     "prisma": "^5.22.0",
@@ -28,6 +29,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.53.1",
     "remix-auth": "^3.7.0",
+    "remix-auth-totp": "^3.4.2",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"

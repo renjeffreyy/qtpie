@@ -14,10 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-  email: z.string().email().min(5),
-  password: z.string().min(8, {
-    message: "password must be at least 8 characters",
-  }),
+  email: z.string().email().min(5)
 });
 
 function onSubmit(values: z.infer<typeof formSchema>) {
@@ -28,14 +25,13 @@ function LoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: ""
     },
   });
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form method="POST" className="space-y-8">
         <FormField
           control={form.control}
           name="email"
@@ -44,22 +40,6 @@ function LoginForm() {
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input placeholder="email" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="password" {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display name.
