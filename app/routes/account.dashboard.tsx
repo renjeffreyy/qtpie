@@ -9,12 +9,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const user = await authenticator.isAuthenticated(request, {
     failureRedirect: '/',
   })
-  return json({ user })
+  return json(user)
 }
 
 
 export default function AccountPage() {
   const user = useLoaderData<typeof loader>();
+  console.log(user)
     if(!user){
       return (
         <>
@@ -24,7 +25,7 @@ export default function AccountPage() {
     }
     return (
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <h1>{user && `Welcome ${user.email}`}</h1>
+      <h1>{user && `Welcome ${user.name}`}</h1>
       <Form action="/account/logout" method="POST">
         <button>Log out</button>
       </Form>
